@@ -1,0 +1,44 @@
+/*
+Each cell (i, j) belongs to a 3×3 box:
+boxIndex = (i / 3) * 3 + (j / 3)
+
+This uniquely maps:
+
+(0,0) → box 0
+(4,5) → box 4
+(8,8) → box 8
+*/
+class Solution {
+    public boolean isValidSudoku(char[][] board) {
+        Set<Character>[] rows = new HashSet[9];
+        Set<Character>[] cols = new HashSet[9];
+        Set<Character>[] boxes = new HashSet[9];
+
+        for (int i = 0; i < 9; i++) {
+            rows[i] = new HashSet<>();
+            cols[i] = new HashSet<>();
+            boxes[i] = new HashSet<>();
+        }
+
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                char value = board[i][j];
+
+                if (value == '.') continue;
+
+                int boxIndex = (i / 3) * 3 + (j / 3);
+
+                if (rows[i].contains(value) ||
+                    cols[j].contains(value) ||
+                    boxes[boxIndex].contains(value)) {
+                    return false;
+                }
+
+                rows[i].add(value);
+                cols[j].add(value);
+                boxes[boxIndex].add(value);
+            }
+        }
+        return true;
+    }
+}
